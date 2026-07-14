@@ -4,14 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temperature Converter</title>
+    <style>
+        body{
+            background-color: rgb(200, 200, 200);
+            font-family:'Times New Roman', Times, serif;
+            font-weight: 700;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hidden{
+            display: none;
+        }
+        form{
+            width: min(600px, calc(100% - 2rem));
+            height: auto;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+            background-color:rgb(236, 236, 236);
+            border: 1px solid;
+            border-radius: 20px;;
+            padding: 50px;
+        }
+
+        form input{
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgb(255, 255, 255);
+            font-weight: bold;
+            width: 90%;
+        }
+
+        select{
+            padding : 10px;
+            width: 94%;
+            border-radius: 5px;
+        }
+
+        .input_number{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input_number label{
+            font-size: 20px;
+        }
+
+        .select{
+            width: 100%;
+        }
+
+        .button{
+            background-color: rgb(149, 153, 153);
+            color: white;
+            padding:10px 20px;
+            width: 95%;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 <body>
-    <main>
+    <form action="submit" method="post">
         <h1>Temperature Converter</h1>
-        <div>
-            <label for="number"></label>
-            <input id="number" type="number" />
+        <div class="input_number">
+            <label for="number">Enter the number</label>
+            <input id="number" type="number" value="36"/>
         </div>
-    </main>
+        <div class="select">
+            <select name="unit" id="dropdown" name="conversion">
+                <option value="Faherenheit">Celsius to Faherenheit</option>
+                <option value="Celsius">Fahrenheit to Celsius</option>
+            </select>
+        </div>
+        <button type="submit" class="button">Convert</button>
+        <div class="hidden">
+            <p class="showing_area"></p>
+            <p class="error_area"></p>
+        </div>
+    </form>
+
+    <script>
+        
+        const buttonSubmit = document.querySelector(".button");
+        const showingArea = document.querySelector(".showing_area");
+        const hidden = document.querySelector(".hidden")
+        const errorArea = document.querySelector(".error_area");
+
+        function conversion(number){
+            const selectionUnit = document.getElementById("dropdown").value;
+            if (selectionUnit === "Faherenheit" ){
+                let result = number * 9 / 5 + 32;
+                return result;
+            } else{
+                let result = (number - 32) * ( 5 / 9) ;
+                return result;
+            }
+        }
+
+        buttonSubmit.addEventListener("click", function(event) {
+            event.preventDefault();
+            const inputValue = document.getElementById("number").value;
+            const selectionUnit = document.getElementById("dropdown").value;
+
+            hidden.classList.remove("hidden");
+            showingArea.textContent = conversion(inputValue);
+            console.log(conversion(inputValue))
+        })
+    </script>
 </body>
 </html>
