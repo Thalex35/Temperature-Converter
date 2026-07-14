@@ -65,6 +65,14 @@
             width: 100%;
         }
 
+        .error_area {
+            color: rgb(255, 112, 112);
+        }
+
+        .showing_area{
+            font-style: italic;
+        }
+
         .button{
             background-color: rgb(149, 153, 153);
             color: white;
@@ -85,14 +93,14 @@
         </div>
         <div class="select">
             <select name="unit" id="dropdown" name="conversion">
-                <option value="Faherenheit">Celsius to Faherenheit</option>
+                <option value="Fahrenheit">Celsius to Fahrenheit</option>
                 <option value="Celsius">Fahrenheit to Celsius</option>
             </select>
         </div>
         <button type="submit" class="button">Convert</button>
-        <div class="hidden">
-            <p class="showing_area"></p>
-            <p class="error_area"></p>
+        <div class="para">
+            <p class="showing_area hidden"></p>
+            <p class="error_area hidden"></p>
         </div>
     </form>
 
@@ -100,28 +108,54 @@
         
         const buttonSubmit = document.querySelector(".button");
         const showingArea = document.querySelector(".showing_area");
-        const hidden = document.querySelector(".hidden")
         const errorArea = document.querySelector(".error_area");
+
+        function verification(){
+            const inputValue = document.getElementById("number").value;
+           
+            if (inputValue.trim() === ""){
+                errorArea.textContent = `Please enter a temperature`;
+                errorArea.classList.remove("hidden");
+                showingArea.classList.add("hidden");
+                return false;
+            } 
+
+             if (Number.isNaN(Number(inputValue))){
+                errorArea.textContent = `Please enter a valid number`;
+                errorArea.classList.remove("hidden");
+                showingArea.classList.add("hidden");
+                return false;
+            }  
+
+            errorArea.textContent = "";
+            errorArea.classList.add("hidden");
+            return true;
+
+        }
 
         function conversion(number){
             const selectionUnit = document.getElementById("dropdown").value;
-            if (selectionUnit === "Faherenheit" ){
+            if (selectionUnit === "Fahrenheit" ){
                 let result = number * 9 / 5 + 32;
-                return result;
-            } else{
+                let message = `${number} °C is ${result.toFixed(2)} °F`;
+                return message;
+            } else {
                 let result = (number - 32) * ( 5 / 9) ;
-                return result;
+                let message = `${number} °F is ${result.toFixed(2)} °C`;
+                return message;
             }
         }
 
         buttonSubmit.addEventListener("click", function(event) {
             event.preventDefault();
-            const inputValue = document.getElementById("number").value;
-            const selectionUnit = document.getElementById("dropdown").value;
+            if (!verification()){
+                return;
+            };
 
-            hidden.classList.remove("hidden");
+            const inputValue = document.getElementById("number").value;
             showingArea.textContent = conversion(inputValue);
-            console.log(conversion(inputValue))
+            showingArea.classList.remove("hidden");
+            
         })
     </script>
 </body>
